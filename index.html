@@ -1,0 +1,784 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>楊梅高中時光航拍校史</title>
+<meta name="description" content="以空中俯瞰的動態圖文短片，從 1968 年到今天，看楊梅高中一步一步長大。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#FFF8EC; --paper:#FFFDF7; --line:#d9e8f5; --sky:#4FB3E8; --sky2:#9ddcff;
+  --leaf:#5DBB63; --plum:#F27BA0; --sun:#FFD45C; --ink:#23324A; --ink2:#5a6b85;
+  --page-bg:#1c2a40;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --page-bg:#0f1726; } }
+:root[data-theme="dark"]{ --page-bg:#0f1726; }
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--page-bg);overflow:hidden;font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;color:var(--ink)}
+#viewport{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+#stage{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;overflow:hidden;background:var(--cream)}
+.num{font-family:"Baloo 2","Noto Sans TC",sans-serif}
+/* background notebook grid */
+#bg{position:absolute;inset:0}
+/* map window */
+#mapFrame{position:absolute;left:60px;top:130px;width:1080px;height:700px;border-radius:28px;overflow:hidden;background:#cfe6c4;
+  box-shadow:0 18px 0 -6px rgba(35,50,74,.12),0 10px 30px rgba(35,50,74,.22);outline:6px solid #fff}
+#mapWrap{position:absolute;inset:0}
+#mapSvg,#hudSvg{position:absolute;inset:0;width:1080px;height:700px}
+#pins{position:absolute;inset:0;pointer-events:none}
+.pin{position:absolute;transform:translate(-50%,-100%);pointer-events:auto;cursor:pointer;border:0;background:none;padding:0;font:inherit}
+.pin .tag{display:block;white-space:nowrap;background:#fff;color:var(--ink);font-weight:900;font-size:22px;padding:6px 14px;border-radius:999px;box-shadow:0 4px 0 rgba(35,50,74,.18);border:3px solid var(--ink)}
+.pin .stem{display:block;width:4px;height:22px;background:var(--ink);margin:0 auto}
+.pin .dot{display:block;width:16px;height:16px;border-radius:50%;background:var(--plum);border:3px solid #fff;margin:-4px auto 0;box-shadow:0 0 0 3px var(--ink)}
+#tip{position:absolute;max-width:420px;background:#fff;border:3px solid var(--ink);border-radius:18px;padding:14px 18px;font-size:22px;line-height:1.5;box-shadow:6px 6px 0 var(--sun);display:none;z-index:5}
+#tip b{color:var(--plum)}
+/* card */
+#cardWrap{position:absolute;left:1190px;top:130px;width:670px;height:700px;perspective:1800px}
+#card{position:absolute;inset:0;border-radius:26px;background:var(--paper);transform-origin:0% 50%;
+  background-image:repeating-linear-gradient(#fffdf7 0 55px,#d9e8f5 55px 57px);background-position:0 30px;
+  box-shadow:0 10px 30px rgba(35,50,74,.2);padding:46px 46px 30px 70px;overflow:hidden}
+#card:before{content:"";position:absolute;left:44px;top:0;bottom:0;width:3px;background:#f6b3c6}
+.tape{position:absolute;width:150px;height:40px;background:rgba(255,212,92,.85);transform:rotate(-4deg);top:-10px;right:70px;box-shadow:0 2px 4px rgba(0,0,0,.08)}
+.chno{display:inline-block;font-family:"Baloo 2";font-weight:800;font-size:28px;color:#fff;background:var(--sky);padding:2px 18px;border-radius:12px;transform:rotate(-3deg)}
+.yrs{font-family:"Baloo 2";font-weight:800;font-size:40px;color:var(--plum);margin-left:14px;vertical-align:middle}
+.ctitle{font-size:58px;font-weight:900;margin:14px 0 18px;line-height:1.15;letter-spacing:2px}
+.ctitle span{background:linear-gradient(transparent 62%,rgba(255,212,92,.8) 62%)}
+.bul{font-size:32px;line-height:1.55;margin:0 0 12px;padding-left:38px;position:relative;font-weight:700}
+.bul:before{content:"";position:absolute;left:4px;top:15px;width:18px;height:18px;border-radius:50%;background:var(--leaf);box-shadow:0 0 0 4px #e3f5e1}
+.bul em{font-style:normal;color:var(--plum)}
+.prs{position:absolute;left:70px;right:40px;bottom:94px;display:flex;gap:16px;flex-wrap:wrap}
+.pr{background:#fff;border:3px solid var(--ink);border-radius:16px;padding:8px 16px 10px;box-shadow:5px 5px 0 var(--sky2);transform:rotate(-1.5deg)}
+.pr:nth-child(2){transform:rotate(1.5deg);box-shadow:5px 5px 0 #ffd0dd}
+.pr small{display:block;font-size:18px;color:var(--ink2);font-weight:700}
+.pr b{font-size:32px;font-weight:900}
+.pr i{font-style:normal;font-family:"Baloo 2";font-weight:800;font-size:22px;color:var(--plum);margin-left:8px}
+.src{position:absolute;left:70px;bottom:26px;display:flex;gap:10px;flex-wrap:wrap}
+.src a{font-size:18px;font-weight:700;color:var(--ink);text-decoration:none;background:#eaf6ff;border:2px solid var(--sky);border-radius:999px;padding:4px 12px}
+.src a:hover{background:var(--sun)}
+.note{font-size:17px;color:var(--ink2);font-weight:400;margin-top:-4px}
+/* header */
+#hdr{position:absolute;left:60px;top:28px;right:60px;height:80px;display:flex;align-items:center;gap:20px}
+#hdr .logo{width:66px;height:66px}
+#hdr h1{margin:0;font-size:40px;font-weight:900;letter-spacing:3px}
+#hdr h1 small{font-size:24px;color:var(--ink2);font-weight:700;margin-left:12px;letter-spacing:1px}
+#chips{margin-left:auto;display:flex;gap:8px}
+.chip{width:46px;height:14px;border-radius:999px;background:#e4ecf3;border:0;cursor:pointer;padding:0}
+.chip.on{background:var(--plum)}.chip.done{background:var(--sky)}
+/* subtitles */
+#sub{position:absolute;left:0;right:0;top:846px;text-align:center;pointer-events:none}
+#sub span{display:inline-block;max-width:1700px;background:rgba(35,50,74,.88);color:#fff;font-size:34px;font-weight:700;padding:6px 26px;border-radius:14px;line-height:1.35}
+#tl{position:absolute;left:0;top:900px;width:1920px;height:180px}
+/* opening / ending */
+#open,#end{position:absolute;inset:0;pointer-events:none}
+#petals{position:absolute;inset:0;pointer-events:none}
+/* controls */
+#ui{position:fixed;left:0;right:0;bottom:0;padding:10px 18px 14px;background:linear-gradient(transparent,rgba(10,16,28,.85));color:#fff;transition:opacity .4s;z-index:20;font-size:15px}
+#ui.hide{opacity:0}
+#bar{position:relative;height:22px;cursor:pointer;margin-bottom:6px}
+#bar .rail{position:absolute;left:0;right:0;top:9px;height:5px;background:rgba(255,255,255,.3);border-radius:3px}
+#bar .fill{position:absolute;left:0;top:9px;height:5px;background:var(--plum);border-radius:3px}
+#bar .mk{position:absolute;top:5px;width:3px;height:13px;background:#fff;opacity:.8}
+#bar .knob{position:absolute;top:3px;width:16px;height:16px;border-radius:50%;background:#fff;margin-left:-8px}
+#row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+#ui button,#ui select{background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:8px;padding:6px 12px;font:inherit;cursor:pointer}
+#ui button.off{opacity:.45}
+#time{font-variant-numeric:tabular-nums;min-width:110px}
+#chapSel{max-width:240px}
+#ui .sp{flex:1}
+#start{position:fixed;inset:0;z-index:30;display:flex;align-items:center;justify-content:center;background:rgba(15,23,38,.55)}
+#start button{font:900 30px "Noto Sans TC",sans-serif;color:var(--ink);background:var(--sun);border:4px solid #fff;border-radius:999px;padding:20px 46px;cursor:pointer;box-shadow:0 8px 0 rgba(0,0,0,.25)}
+#start p{color:#fff;text-align:center;font-size:16px;margin-top:16px}
+#drawer{position:fixed;right:0;top:0;bottom:0;width:min(520px,100%);background:#fffdf7;color:var(--ink);z-index:40;transform:translateX(100%);transition:transform .35s;overflow:auto;padding:24px 26px 80px;font-size:15px;line-height:1.7}
+#drawer.open{transform:none}
+#drawer h2{margin:.2em 0 .4em;font-size:22px}#drawer h3{font-size:17px;margin:1.2em 0 .3em;color:#c2416b}
+#drawer a{color:#1b6fb0}
+#drawer .x{position:absolute;right:16px;top:14px;font-size:22px;background:none;border:0;cursor:pointer;color:var(--ink)}
+@media (max-width:700px){#ui{font-size:13px;padding:8px 10px}#ui button{padding:5px 8px}#chapSel{max-width:150px}}
+</style>
+</head>
+<body>
+<div id="viewport">
+<div id="stage">
+  <svg id="bg" width="1920" height="1080" viewBox="0 0 1920 1080">
+    <defs>
+      <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#f0e3c8" stroke-width="2"/></pattern>
+      <symbol id="plum" viewBox="-20 -20 40 40"><g fill="#F27BA0"><circle cx="0" cy="-9" r="8"/><circle cx="8.6" cy="-2.8" r="8"/><circle cx="5.3" cy="7.3" r="8"/><circle cx="-5.3" cy="7.3" r="8"/><circle cx="-8.6" cy="-2.8" r="8"/></g><circle r="4" fill="#FFD45C"/></symbol>
+    </defs>
+    <rect width="1920" height="1080" fill="url(#grid)"/>
+    <g id="bgDeco"></g>
+  </svg>
+
+  <div id="hdr">
+    <svg class="logo" viewBox="-20 -20 40 40"><circle r="19" fill="#fff" stroke="#23324A" stroke-width="2.5"/><use href="#plum" x="-14" y="-14" width="28" height="28"/></svg>
+    <h1>楊梅高中．時光航拍校史<small>1968 → 今</small></h1>
+    <div id="chips"></div>
+  </div>
+
+  <div id="mapFrame">
+    <div id="mapWrap"><svg id="mapSvg" viewBox="0 0 1080 700"><defs>
+      <filter id="grain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="7"/><feColorMatrix values="0 0 0 0 .5  0 0 0 0 .5  0 0 0 0 .5  0 0 0 .55 0"/></filter>
+      <radialGradient id="vig" cx="50%" cy="50%" r="70%"><stop offset="60%" stop-color="#000" stop-opacity="0"/><stop offset="100%" stop-color="#000" stop-opacity=".35"/></radialGradient>
+      <filter id="glow"><feGaussianBlur stdDeviation="6"/></filter>
+    </defs><g id="cam"></g><g id="clouds"></g><rect id="grainR" width="1080" height="700" filter="url(#grain)" opacity=".2"/><rect width="1080" height="700" fill="url(#vig)"/></svg></div>
+    <svg id="hudSvg" viewBox="0 0 1080 700"></svg>
+    <div id="pins"></div>
+    <div id="tip"></div>
+  </div>
+
+  <div id="cardWrap"><div id="card"></div></div>
+  <div id="sub"><span></span></div>
+  <svg id="tl" viewBox="0 0 1920 180"></svg>
+  <svg id="petals" width="1920" height="1080" viewBox="0 0 1920 1080"></svg>
+  <div id="open"></div>
+  <div id="end"></div>
+</div>
+</div>
+
+<div id="start"><div><button id="startBtn">▶ 開始播放</button><p>含原創配樂、音效與旁白（瀏覽器語音）・約 5 分鐘</p></div></div>
+
+<div id="ui">
+  <div id="bar"><div class="rail"></div><div class="fill"></div><div class="knob"></div></div>
+  <div id="row">
+    <button id="playBtn">❚❚ 暫停</button>
+    <span id="time" class="num">00:00 / 05:00</span>
+    <select id="chapSel" aria-label="跳到章節"></select>
+    <span class="sp"></span>
+    <button id="ccBtn" title="字幕">字幕</button>
+    <button id="voBtn" title="旁白">旁白</button>
+    <button id="muBtn" title="音樂與音效">音樂</button>
+    <button id="srcBtn">資料來源・真實圖資</button>
+    <button id="fsBtn" title="全螢幕">⛶</button>
+  </div>
+</div>
+
+<aside id="drawer" aria-label="資料來源">
+  <button class="x" id="drawerX" aria-label="關閉">✕</button>
+  <h2>資料來源與真實圖資</h2>
+  <p>片中的空中俯瞰畫面是<b>依校史文字重新繪製的示意圖</b>，不是實際的衛星或航照影像。Google 地球、Google 地圖的影像受授權限制，無法嵌入本頁；想看各年份的真實影像，可以到下面的官方圖資平臺，以「桃園市楊梅區高獅路 5 號」查詢對照。</p>
+  <h3>真實衛星／航照影像</h3>
+  <ul>
+    <li><a href="https://www.google.com/maps/search/%E6%A1%83%E5%9C%92%E5%B8%82%E7%AB%8B%E6%A5%8A%E6%A2%85%E9%AB%98%E7%B4%9A%E4%B8%AD%E7%AD%89%E5%AD%B8%E6%A0%A1" target="_blank" rel="noopener">Google 地圖（衛星圖層）</a>：看現在的校園。</li>
+    <li><a href="https://earth.google.com/web/search/%E6%A1%83%E5%9C%92%E5%B8%82%E7%AB%8B%E6%A5%8A%E6%A2%85%E9%AB%98%E7%B4%9A%E4%B8%AD%E7%AD%89%E5%AD%B8%E6%A0%A1" target="_blank" rel="noopener">Google 地球（網頁版）</a>：開啟「歷史影像／時光倒流」可以比較 2000 年代之後的衛星影像。</li>
+    <li><a href="https://maps.nlsc.gov.tw/" target="_blank" rel="noopener">內政部國土測繪中心・國土測繪圖資服務雲</a>：正射影像、歷年航照。</li>
+    <li><a href="https://gissrv4.sinica.edu.tw/gis/twhgis/" target="_blank" rel="noopener">中央研究院・臺灣百年歷史地圖</a>：舊航照、像片基本圖、經建版地形圖，適合對照 1960–1990 年代。</li>
+  </ul>
+  <h3>校史文字依據</h3>
+  <ul>
+    <li><a href="https://www.ymhs.tyc.edu.tw/" target="_blank" rel="noopener">桃園市立楊梅高級中等學校官網</a>（校史沿革、新大樓 103 年 5 月啟用）</li>
+    <li><a href="https://www.ymhs.tyc.edu.tw/ischool/publish_page/233/?cid=4846" target="_blank" rel="noopener">楊梅高中校友會頁面</a>（歷任校長）</li>
+    <li><a href="https://zh.wikipedia.org/zh-tw/%E6%A1%83%E5%9C%92%E5%B8%82%E7%AB%8B%E6%A5%8A%E6%A2%85%E9%AB%98%E7%B4%9A%E4%B8%AD%E7%AD%89%E5%AD%B8%E6%A0%A1" target="_blank" rel="noopener">維基百科：桃園市立楊梅高級中等學校</a>（校長任期、改制年份）</li>
+    <li><a href="https://highschool.yjvs.chc.edu.tw/search/show.php?id=175" target="_blank" rel="noopener">全國高級中等學校及五專資訊網</a>（學制、班別）</li>
+  </ul>
+  <h3>內容範圍與待查證處</h3>
+  <ul>
+    <li>本片只講 1968 年省立楊梅高中成立之後的歷史，不使用楊梅國中（原縣立楊梅中學）的史料與圖資。</li>
+    <li>鍾香華、蘇景進兩位校長的任期，維基百科（1997–2003、2003–2010）和校友會頁面（1997–2005、2005–2010）記載不同，片中採用維基百科。</li>
+    <li>校舍位置、棟數與興建年份都是示意，只有「2014 年 5 月新大樓啟用」有學校文字依據。</li>
+    <li>如需正式使用，請再向學校校史室核對。</li>
+  </ul>
+  <h3>製作</h3>
+  <p>畫面：單一 HTML＋內嵌 SVG，畫面完全由時間 t 決定。配樂與音效：Web Audio 即時原創合成。旁白：瀏覽器內建語音（zh-TW）。</p>
+</aside>
+
+<script>
+(()=>{
+'use strict';
+/* ================= helpers ================= */
+const NS='http://www.w3.org/2000/svg';
+const $=s=>document.querySelector(s);
+const el=(tag,attrs={},parent)=>{const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e;};
+const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const lerp=(a,b,u)=>a+(b-a)*u;
+const prog=(t,a,b)=>clamp((t-a)/(b-a));
+const eio=u=>u<.5?4*u*u*u:1-Math.pow(-2*u+2,3)/2;
+const eout=u=>1-Math.pow(1-u,3);
+const back=u=>{const c1=1.70158,c3=c1+1;return 1+c3*Math.pow(u-1,3)+c1*Math.pow(u-1,2);};
+function rng(seed){return()=>{seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+const hash=(x,y)=>{let h=Math.imul(x*374761393+y*668265263,1274126177);h^=h>>>13;h=Math.imul(h,1274126177);return((h^h>>>16)>>>0)/4294967296;};
+function pw(keys,t){ // piecewise linear [[t,v],...]
+  if(t<=keys[0][0])return keys[0][1];
+  for(let i=1;i<keys.length;i++){if(t<=keys[i][0]){const[a,va]=keys[i-1],[b,vb]=keys[i];return lerp(va,vb,(t-a)/(b-a));}}
+  return keys[keys.length-1][1];
+}
+
+/* ================= timeline data ================= */
+const DUR=300;
+const NOW_YEAR=2026;
+const CH=[
+ {t0:16,t1:52,no:'01',yrs:'1968–1975',title:'稻田裡的新校園',
+  bul:[[3,'九年國教上路，「<em>省辦高中、縣辦初中</em>」'],[12,'接收<em>縣立啟明初中</em>校地，<em>省立楊梅高級中學</em>成立'],[20,'校址：楊梅高山里・高獅路']],
+  prs:[[22,'首任校長','史振鼎','1968–1975']],src:['hist']},
+ {t0:52,t1:84,no:'02',yrs:'1975–1982',title:'鐘聲傳過田野',
+  bul:[[2,'校長接力：<em>馮堯春</em> → <em>董寶鏡</em>'],[10,'操場整平、教室一棟棟出現（示意）'],[19,'校園輪廓，從空中越來越清楚']],
+  prs:[[2,'第 2 任','馮堯春','1975–1978'],[8,'第 3 任','董寶鏡','1978–1982']],src:['hist']},
+ {t0:84,t1:118,no:'03',yrs:'1982–1993',title:'小城長大了',
+  bul:[[2,'<em>欒澤秋</em>校長到任（1982）'],[8,'<em>郭治華</em>校長任期 7 年半，<em>最長</em>'],[13,'校舍持續擴建；田間長出房子與道路']],
+  prs:[[2,'第 4 任','欒澤秋','1982–1986'],[8,'第 5 任','郭治華','1986–1993']],src:['hist']},
+ {t0:118,t1:156,no:'04',yrs:'1993–2003',title:'世紀交替・大步轉型',
+  bul:[[2,'<em>孔建國</em>、<em>鍾香華</em>校長相繼領航'],[11,'<em>1999</em> 改制<em>綜合高中</em>，學術、職業雙路探索'],[21,'<em>2000.02.01</em> 精省，改制<em>國立楊梅高級中學</em>']],
+  prs:[[2,'第 6 任','孔建國','1993–1997'],[6,'第 7 任','鍾香華','1997–2003*']],src:['hist','nlsc'],note:'* 任期另有 1997–2005 一說'},
+ {t0:156,t1:190,no:'05',yrs:'2003–2010',title:'衛星看得見的時代',
+  bul:[[1,'<em>蘇景進</em>校長上任'],[6,'2000 年代起，衛星與正射影像越來越清晰'],[16,'打開 Google 地球「歷史影像」就能對照']],
+  prs:[[1,'第 8 任','蘇景進','2003–2010*']],src:['gearth','nlsc'],note:'* 任期另有 2005–2010 一說'},
+ {t0:190,t1:222,no:'06',yrs:'2010–2017',title:'新地標升起',
+  bul:[[1,'林裕豐代理後，<em>林桂鳳</em>校長接任'],[10,'<em>2014 年 5 月</em>，新大樓剪綵啟用'],[17,'高一新生搬進嶄新的教室']],
+  prs:[[1,'代理','林裕豐','2010'],[4,'第 9 任','林桂鳳','2010–2017']],src:['gearth','nlsc']},
+ {t0:222,t1:254,no:'07',yrs:'2017–2023',title:'成為桃園市立',
+  bul:[[1,'<em>鄒岳廷</em>校長到任'],[6,'<em>2018.01.01</em> 改隸桃園市'],[11,'校名：<em>桃園市立楊梅高級中等學校</em>'],[15,'<em>2019</em> 綜高停招，恢復普通高中附設職業類科']],
+  prs:[[1,'第 10 任','鄒岳廷','2017–2023']],src:['gmaps','gearth']},
+ {t0:254,t1:282,no:'08',yrs:'2023–今',title:'青春，正在進行式',
+  bul:[[1,'<em>鍾碧霞</em>校長上任'],[6,'高一起設<em>語文專班</em>、<em>數理專班</em>'],[10,'<em>體育班</em>：柔道・角力・跆拳道・田徑']],
+  prs:[[1,'第 11 任','鍾碧霞','2023–']],src:['gmaps','nlsc']},
+];
+const SRC={
+ hist:['中研院百年歷史地圖','https://gissrv4.sinica.edu.tw/gis/twhgis/'],
+ nlsc:['國土測繪圖資服務雲','https://maps.nlsc.gov.tw/'],
+ gearth:['Google 地球 歷史影像','https://earth.google.com/web/search/%E6%A1%83%E5%9C%92%E5%B8%82%E7%AB%8B%E6%A5%8A%E6%A2%85%E9%AB%98%E7%B4%9A%E4%B8%AD%E7%AD%89%E5%AD%B8%E6%A0%A1'],
+ gmaps:['Google 地圖 衛星','https://www.google.com/maps/search/%E6%A1%83%E5%9C%92%E5%B8%82%E7%AB%8B%E6%A5%8A%E6%A2%85%E9%AB%98%E7%B4%9A%E4%B8%AD%E7%AD%89%E5%AD%B8%E6%A0%A1'],
+};
+// narration: t = start time, say = for TTS, cap = subtitle
+const VO=[
+ {t:1.6,say:'按下時光快轉鍵。從一九六八年到今天，我們用一張張空中視角，看楊梅高中怎麼一步一步長大。',cap:'按下時光快轉鍵。從 1968 年到今天，用一張張空中視角，看楊梅高中一步一步長大。'},
+ {t:17,say:'一九六八年，九年國民義務教育上路，政府確立「省辦高中、縣辦初中」。',cap:'1968 年，九年國民義務教育上路，政府確立「省辦高中、縣辦初中」。'},
+ {t:26,say:'就在這一年，省立楊梅高級中學正式成立，校地接收了縣立啟明初中，就在高山里的高獅路旁。',cap:'就在這一年，省立楊梅高級中學正式成立，接收縣立啟明初中校地，就在高山里高獅路旁。'},
+ {t:37.5,say:'空中看下去，四周還是一片片稻田，校舍只有幾排平房。首任校長史振鼎，帶著第一批師生，寫下第一頁。',cap:'四周還是一片片稻田，校舍只有幾排平房。首任校長史振鼎，帶著第一批師生寫下第一頁。'},
+ {t:53,say:'翻到一九七五年，馮堯春校長接棒；一九七八年，董寶鏡校長上任。',cap:'翻到 1975 年，馮堯春校長接棒；1978 年，董寶鏡校長上任。'},
+ {t:62,say:'操場整平了，教室一棟一棟出現，鐘聲在田野之間，越傳越遠。',cap:'操場整平了，教室一棟一棟出現，鐘聲在田野之間越傳越遠。'},
+ {t:71,say:'從空中看，校園的輪廓，開始變得清楚。',cap:'從空中看，校園的輪廓開始變得清楚。'},
+ {t:85,say:'一九八二年，欒澤秋校長到任。一九八六年，郭治華校長接手，一做就是七年半，是任期最長的校長。',cap:'1982 年，欒澤秋校長到任。1986 年，郭治華校長接手，一做七年半，是任期最長的校長。'},
+ {t:97.5,say:'這段時間，校舍持續擴建，周邊的田地，也慢慢長出了房子和道路。',cap:'這段時間，校舍持續擴建，周邊的田地也慢慢長出房子和道路。'},
+ {t:107,say:'楊梅，正在變成一座熱鬧的小城。',cap:'楊梅，正在變成一座熱鬧的小城。'},
+ {t:119,say:'一九九三年，孔建國校長；一九九七年，鍾香華校長。世紀交替前，學校大步轉型。',cap:'1993 年孔建國校長、1997 年鍾香華校長。世紀交替前，學校大步轉型。'},
+ {t:129,say:'一九九九年，改制為綜合高中，讓學生依照興趣，探索學術和職業的不同路線。',cap:'1999 年改制為綜合高中，讓學生依興趣，探索學術和職業的不同路線。'},
+ {t:139,say:'二〇〇〇年二月一日，因應精省，學校改制為國立楊梅高級中學。',cap:'2000 年 2 月 1 日，因應精省，學校改制為國立楊梅高級中學。'},
+ {t:147.5,say:'校門口的校名，換上了新的字。',cap:'校門口的校名，換上了新的字。'},
+ {t:157,say:'二〇〇三年，蘇景進校長上任。',cap:'2003 年，蘇景進校長上任。'},
+ {t:162,say:'進入二〇〇〇年代，衛星和正射影像越來越清楚，打開Google地球的歷史影像，就能一年一年對照。',cap:'進入 2000 年代，衛星和正射影像越來越清楚，打開 Google 地球的歷史影像，就能一年年對照。'},
+ {t:174,say:'從高空俯瞰，校舍、操場、跑道，一格一格都看得見。',cap:'從高空俯瞰，校舍、操場、跑道，一格一格都看得見。'},
+ {t:191,say:'二〇一〇年，林裕豐代理校長之後，林桂鳳校長接任，帶領學校走過七年。',cap:'2010 年，林裕豐代理校長之後，林桂鳳校長接任，帶領學校走過七年。'},
+ {t:200,say:'二〇一四年五月，新大樓剪綵啟用，高一新生搬進嶄新的教室。',cap:'2014 年 5 月，新大樓剪綵啟用，高一新生搬進嶄新的教室。'},
+ {t:208.5,say:'在空拍畫面上，這棟新建築，成了校園裡最亮眼的新地標。',cap:'在空拍畫面上，這棟新建築成了校園裡最亮眼的新地標。'},
+ {t:223,say:'二〇一七年，鄒岳廷校長到任。',cap:'2017 年，鄒岳廷校長到任。'},
+ {t:228,say:'二〇一八年一月一日，學校改隸桃園市，校名成為桃園市立楊梅高級中等學校。',cap:'2018 年 1 月 1 日，學校改隸桃園市，校名成為「桃園市立楊梅高級中等學校」。'},
+ {t:237,say:'二〇一九年，綜合高中停止招生，恢復為普通高中附設職業類科。',cap:'2019 年，綜合高中停止招生，恢復為普通高中附設職業類科。'},
+ {t:245.5,say:'楊梅高中，邁向新的課綱時代。',cap:'楊梅高中，邁向新的課綱時代。'},
+ {t:255,say:'二〇二三年，鍾碧霞校長上任。',cap:'2023 年，鍾碧霞校長上任。'},
+ {t:260,say:'從高一開始，有語文專班、數理專班，還有柔道、角力、跆拳道和田徑的體育班。',cap:'高一起有語文專班、數理專班，還有柔道、角力、跆拳道、田徑的體育班。'},
+ {t:269,say:'今天的衛星地圖上，校園被城市圍繞，而每天走進校門的，依然是青春的笑臉。',cap:'今天的衛星地圖上，校園被城市圍繞；每天走進校門的，依然是青春的笑臉。'},
+ {t:283,say:'從稻田間的幾排平房，到今天的楊梅高中。時間一直往前，我們的故事，還在繼續寫。',cap:'從稻田間的幾排平房，到今天的楊梅高中。時間一直往前，我們的故事還在繼續寫。'},
+];
+VO.forEach(v=>v.d=Math.min(v.say.length/4.6+.8,14));
+// year flow keyed to narration
+const YK=[[0,1968],[17,1968],[48,1974.3],[52,1975],[60,1978],[80,1981.5],[84,1982],[94,1986],[116,1992.6],[118,1993],[126,1997],[130,1999],[140,2000.1],[154,2002.6],[156,2003],[176,2009],[190,2010],[200,2014.4],[216,2016.5],[222,2017],[228,2018],[237,2019],[252,2022.5],[254,2023],[280,2026],[300,2026]];
+const yearAt=t=>pw(YK,t);
+// stamps (milestones)
+const STAMPS=[
+ {t:30,a:'1968',b:'省立楊梅高中成立',c:'#d6455f'},
+ {t:131,a:'1999',b:'改制綜合高中',c:'#2f7fc1'},
+ {t:141,a:'2000.02.01',b:'國立楊梅高級中學',c:'#d6455f'},
+ {t:201,a:'2014.05',b:'新大樓啟用',c:'#2f8f4a'},
+ {t:229.5,a:'2018.01.01',b:'桃園市立楊梅高中',c:'#d6455f'},
+ {t:238,a:'2019',b:'普通高中附設職業類科',c:'#2f7fc1'},
+];
+const CHIMES=[30,131,141,201,229.5,238,284];
+// camera keyframes: t, cx, cy, zoom
+const CAM=[[0,810,555,2.4],[16,810,555,2.4],[30,800,560,1.6],[52,790,550,1.35],[84,800,560,1.1],[112,760,580,.82],[128,820,560,1.45],[156,800,560,1.0],[190,790,560,1.25],[202,720,520,2.0],[222,800,560,1.25],[254,820,560,1.0],[282,800,570,.8],[300,800,570,.72]];
+function camAt(t){
+  if(t<=CAM[0][0])return CAM[0].slice(1);
+  for(let i=1;i<CAM.length;i++){if(t<=CAM[i][0]){const a=CAM[i-1],b=CAM[i];const u=eio((t-a[0])/(b[0]-a[0]));return[lerp(a[1],b[1],u),lerp(a[2],b[2],u),lerp(a[3],b[3],u)];}}
+  return CAM[CAM.length-1].slice(1);
+}
+const PRINC=[['史振鼎',1968.6,1975.1],['馮堯春',1975.1,1978.6],['董寶鏡',1978.6,1982.1],['欒澤秋',1982.1,1986.1],['郭治華',1986.1,1993.6],['孔建國',1993.6,1997.6],['鍾香華',1997.6,2003.6],['蘇景進',2003.6,2010.1],['林桂鳳',2010.6,2017.6],['鄒岳廷',2017.6,2023.6],['鍾碧霞',2023.6,2031]];
+const chapterAt=t=>{for(let i=CH.length-1;i>=0;i--)if(t>=CH[i].t0)return i;return -1;};
+
+/* ================= build MAP (world 1600x1100) ================= */
+const cam=$('#cam');
+const ground=el('rect',{x:-200,y:-200,width:2000,height:1500,fill:'#b9d99a'},cam);
+const hills=el('g',{},cam), gCells=el('g',{},cam), gStream=el('g',{},cam), gRoads=el('g',{},cam), gCampus=el('g',{},cam), gTrees=el('g',{},cam);
+// hills (NE)
+[[1450,120,380,270,'#5f9e57'],[1480,100,290,190,'#6cab61'],[1500,90,190,120,'#79b86c']].forEach(h=>el('ellipse',{cx:h[0],cy:h[1],rx:h[2],ry:h[3],fill:h[4]},hills));
+// stream
+el('path',{d:'M-50 330 C 200 250, 380 360, 560 300 S 900 200, 1100 260 S 1400 330, 1700 230',fill:'none',stroke:'#7cc4e6','stroke-width':16,'stroke-linecap':'round'},gStream);
+const CAMPUS={x:600,y:420,w:420,h:270};
+const MAINROAD=[[-100,770],[400,752],[800,742],[1200,730],[1700,712]];
+function distSeg(px,py,ax,ay,bx,by){const dx=bx-ax,dy=by-ay;const u=clamp(((px-ax)*dx+(py-ay)*dy)/(dx*dx+dy*dy));return Math.hypot(px-ax-u*dx,py-ay-u*dy);}
+function distPoly(px,py,P){let d=1e9;for(let i=1;i<P.length;i++)d=Math.min(d,distSeg(px,py,P[i-1][0],P[i-1][1],P[i][0],P[i][1]));return d;}
+const PADDY=['#7cc36b','#8fd07a','#6db85e','#9bd383','#b5dc8f'];
+const ROOF=['#d9774f','#c8ccd2','#6d9bcc','#e2b56b','#b9634a','#e9e4dc','#9aa7b4'];
+const cells=[];
+for(let gy=0;gy<28;gy++)for(let gx=0;gx<33;gx++){
+  const x=-20+gx*50, y=-20+gy*41, cx=x+25, cy=y+20;
+  if(cx>CAMPUS.x-15&&cx<CAMPUS.x+CAMPUS.w+15&&cy>CAMPUS.y-15&&cy<CAMPUS.y+CAMPUS.h+15)continue;
+  if(((cx-1450)/380)**2+((cy-120)/270)**2<1)continue;
+  const h=hash(gx,gy), dRoad=distPoly(cx,cy,MAINROAD), dTown=Math.hypot(cx+100,cy-780);
+  const uy=1971+dTown*.021+dRoad*.028+h*11-(dRoad<45?6:0);
+  const g=el('g',{},gCells);
+  const p=el('rect',{x:x+2,y:y+2,width:46,height:37,rx:3,fill:PADDY[Math.floor(h*5)],stroke:'#9fcf86','stroke-width':1.5},g);
+  const hs=el('g',{opacity:0},g);
+  el('rect',{x:x+1,y:y+1,width:48,height:39,fill:'#d8d2c4'},hs);
+  const r=rng(gx*131+gy*7+3);const n=1+Math.floor(r()*3);
+  for(let k=0;k<n;k++){const w=14+r()*16,hh=12+r()*14,xx=x+4+r()*(42-w),yy=y+4+r()*(32-hh);
+    el('rect',{x:xx+3,y:yy+3,width:w,height:hh,fill:'rgba(40,40,40,.25)'},hs);
+    el('rect',{x:xx,y:yy,width:w,height:hh,fill:ROOF[Math.floor(r()*ROOF.length)]},hs);}
+  cells.push({p,hs,uy});
+}
+// roads [points, appearYear, width0, width1, name]
+const ROADS=[
+ {P:MAINROAD,y:1960,w0:12,w1:22,name:'高獅路'},
+ {P:[[505,-60],[515,400],[525,760],[540,1160]],y:1979,w0:9,w1:16},
+ {P:[[1190,-60],[1170,500],[1160,730],[1150,1160]],y:1991,w0:9,w1:16},
+ {P:[[-80,520],[300,505],[520,500]],y:1986,w0:7,w1:12},
+ {P:[[1160,560],[1400,540],[1700,520]],y:2004,w0:8,w1:13},
+ {P:[[60,1150],[300,930],[525,850],[800,742]],y:1997,w0:8,w1:14},
+];
+ROADS.forEach(R=>{
+  const d='M'+R.P.map(p=>p.join(' ')).join(' L');
+  R.edge=el('path',{d,fill:'none',stroke:'#e9e3d3','stroke-linecap':'round','stroke-linejoin':'round'},gRoads);
+  R.core=el('path',{d,fill:'none',stroke:'#8d8f93','stroke-linecap':'round','stroke-linejoin':'round'},gRoads);
+  R.mid=el('path',{d,fill:'none',stroke:'#f4f1e8','stroke-dasharray':'14 14','stroke-width':2},gRoads);
+  R.len=R.core.getTotalLength?R.core.getTotalLength():2000;
+});
+// campus
+const campusBase=el('rect',{x:CAMPUS.x,y:CAMPUS.y,width:CAMPUS.w,height:CAMPUS.h,rx:8,fill:'#cfd9b8'},gCampus);
+const campusWall=el('rect',{x:CAMPUS.x,y:CAMPUS.y,width:CAMPUS.w,height:CAMPUS.h,rx:8,fill:'none',stroke:'#fff','stroke-width':4,'stroke-dasharray':'1400','stroke-dashoffset':1400},gCampus);
+const driveway=el('rect',{x:795,y:690,width:30,height:52,fill:'#c9c3b3'},gCampus);
+const field=el('g',{},gCampus);
+const fieldOuter=el('rect',{x:852,y:440,width:150,height:205,rx:72,fill:'#d8c49a'},field);
+const fieldInner=el('rect',{x:872,y:470,width:110,height:145,rx:52,fill:'#d8c49a'},field);
+const fieldLines=el('rect',{x:862,y:455,width:130,height:175,rx:62,fill:'none',stroke:'#fff','stroke-width':2,'stroke-dasharray':'6 6',opacity:0},field);
+function bld(spec){ // {x,y,w,h,y0 (appear year), y1 (vanish year), roof, tall, label}
+  const g=el('g',{},gCampus);
+  const sh=el('rect',{x:spec.x+spec.tall,y:spec.y+spec.tall,width:spec.w,height:spec.h,fill:'rgba(30,40,40,.3)'},g);
+  const scaf=el('rect',{x:spec.x,y:spec.y,width:spec.w,height:spec.h,fill:'none',stroke:'#e79a3c','stroke-width':3,'stroke-dasharray':'8 6'},g);
+  const roof=el('rect',{x:spec.x,y:spec.y,width:spec.w,height:spec.h,fill:spec.roof,stroke:'rgba(0,0,0,.15)','stroke-width':1.5},g);
+  const ridge=el('line',{x1:spec.w>spec.h?spec.x+4:spec.x+spec.w/2,y1:spec.w>spec.h?spec.y+spec.h/2:spec.y+4,x2:spec.w>spec.h?spec.x+spec.w-4:spec.x+spec.w/2,y2:spec.w>spec.h?spec.y+spec.h/2:spec.y+spec.h-4,stroke:'rgba(255,255,255,.5)','stroke-width':2},g);
+  return Object.assign(spec,{g,sh,scaf,roof,ridge});
+}
+const OLD=[bld({x:630,y:450,w:150,h:26,y0:1959,y1:2012.2,roof:'#8f9aa3',tall:4}),bld({x:630,y:494,w:150,h:26,y0:1959,y1:2012.2,roof:'#8f9aa3',tall:4}),bld({x:630,y:538,w:150,h:26,y0:1959,y1:2012.2,roof:'#8f9aa3',tall:4})];
+const BLD=[
+ ...OLD,
+ bld({x:630,y:590,w:150,h:32,y0:1976.2,roof:'#c9cfd6',tall:7}),
+ bld({x:796,y:450,w:36,h:152,y0:1979.8,roof:'#d7dce2',tall:8}),
+ bld({x:630,y:640,w:150,h:36,y0:1988,roof:'#e9e6df',tall:9}),
+ bld({x:796,y:618,w:36,h:58,y0:1991,roof:'#c9cfd6',tall:6}),
+ bld({x:872,y:654,w:120,h:30,y0:1996.6,roof:'#7fa6c9',tall:8}),
+];
+// new building 2014 (L-shape) — drawn as group
+const NEWB={y0:2013.6};
+NEWB.g=el('g',{},gCampus);
+NEWB.glow=el('path',{d:'M622 440 H790 V575 H730 V490 H622 Z',fill:'#FFD45C',filter:'url(#glow)',opacity:0},NEWB.g);
+NEWB.sh=el('path',{d:'M640 456 H806 V591 H748 V506 H640 Z',fill:'rgba(30,40,40,.35)'},NEWB.g);
+NEWB.scaf=el('path',{d:'M626 444 H788 V572 H732 V492 H626 Z',fill:'none',stroke:'#e79a3c','stroke-width':3,'stroke-dasharray':'8 6'},NEWB.g);
+NEWB.roof=el('path',{d:'M626 444 H788 V572 H732 V492 H626 Z',fill:'#fbf3dc',stroke:'#e79a3c','stroke-width':3},NEWB.g);
+NEWB.solar=el('g',{},NEWB.g);
+for(let i=0;i<5;i++)el('rect',{x:640+i*26,y:456,width:20,height:24,fill:'#4b6f9a',opacity:.8},NEWB.solar);
+// gate
+const gate=el('g',{},gCampus);
+el('rect',{x:788,y:682,width:12,height:12,fill:'#b0413e'},gate);el('rect',{x:820,y:682,width:12,height:12,fill:'#b0413e'},gate);
+// trees around campus
+const trees=[];const rt=rng(42);
+for(let i=0;i<46;i++){
+  let x,y;const side=i%4;
+  if(side===0){x=CAMPUS.x+12+rt()*(CAMPUS.w-24);y=CAMPUS.y+8;}
+  else if(side===1){x=CAMPUS.x+CAMPUS.w-8;y=CAMPUS.y+12+rt()*(CAMPUS.h-24);}
+  else if(side===2){x=CAMPUS.x+12+rt()*(CAMPUS.w-24);if(x>780&&x<840)x+=70;y=CAMPUS.y+CAMPUS.h-8;}
+  else {x=CAMPUS.x+8;y=CAMPUS.y+12+rt()*(CAMPUS.h-24);}
+  const c=el('circle',{cx:x,cy:y,r:0,fill:['#3f8f4a','#4fa257','#5bb062'][i%3]},gTrees);
+  trees.push({c,y0:1969+rt()*14,rmax:9+rt()*7});
+}
+// clouds (screen space)
+const clouds=$('#clouds');const CL=[];
+for(let i=0;i<4;i++){const g=el('g',{},clouds);
+  el('ellipse',{cx:30,cy:30,rx:120,ry:46,fill:'rgba(20,30,30,.18)'},g);
+  const w=el('g',{transform:'translate(-40 -60)'},g);
+  [[0,0,90,38],[60,-18,70,40],[-60,-6,60,30],[20,14,100,30]].forEach(e=>el('ellipse',{cx:e[0],cy:e[1],rx:e[2],ry:e[3],fill:'rgba(255,255,255,.85)'},w));
+  CL.push({g,spd:18+i*7,y:80+i*160,off:i*420});}
+
+/* ================= HUD ================= */
+const hud=$('#hudSvg');
+el('rect',{x:20,y:20,width:1040,height:660,rx:18,fill:'none',stroke:'rgba(255,255,255,.55)','stroke-width':2,'stroke-dasharray':'2 10'},hud);
+// crosshair corners
+[[40,40,1,1],[1040,40,-1,1],[40,660,1,-1],[1040,660,-1,-1]].forEach(c=>el('path',{d:`M${c[0]} ${c[1]+30*c[3]} V${c[1]} H${c[0]+30*c[2]}`,fill:'none',stroke:'#fff','stroke-width':4},hud));
+const yrBox=el('g',{transform:'translate(56 52)'},hud);
+el('rect',{x:0,y:0,width:290,height:118,rx:18,fill:'rgba(35,50,74,.82)'},yrBox);
+el('text',{x:22,y:34,fill:'#9ddcff','font-size':20,'font-weight':700},yrBox).textContent='影像年份';
+const yrText=el('text',{x:20,y:104,fill:'#fff','font-size':78,'font-weight':800,class:'num'},yrBox);
+const srcBox=el('g',{transform:'translate(56 600)'},hud);
+const srcBg=el('rect',{x:0,y:0,width:600,height:46,rx:23,fill:'rgba(255,255,255,.92)'},srcBox);
+const srcText=el('text',{x:20,y:31,fill:'#23324A','font-size':20,'font-weight':700},srcBox);
+const tagBox=el('g',{transform:'translate(800 600)'},hud);
+el('rect',{x:0,y:0,width:224,height:46,rx:23,fill:'#FFD45C'},tagBox);
+el('text',{x:112,y:31,fill:'#23324A','font-size':20,'font-weight':900,'text-anchor':'middle'},tagBox).textContent='示意重繪・非實際影像';
+// compass
+const comp=el('g',{transform:'translate(1000 92)'},hud);
+el('circle',{r:34,fill:'rgba(255,255,255,.9)'},comp);el('path',{d:'M0 -26 L9 4 L0 -2 L-9 4Z',fill:'#F27BA0'},comp);
+el('text',{y:24,'text-anchor':'middle','font-size':16,'font-weight':900,fill:'#23324A'},comp).textContent='N';
+// stamps
+const stampG=el('g',{},hud);
+STAMPS.forEach(s=>{const g=el('g',{opacity:0},stampG);
+  el('rect',{x:-190,y:-62,width:380,height:124,rx:16,fill:'rgba(255,255,255,.75)',stroke:s.c,'stroke-width':7},g);
+  el('rect',{x:-178,y:-50,width:356,height:100,rx:10,fill:'none',stroke:s.c,'stroke-width':2.5},g);
+  el('text',{y:-6,'text-anchor':'middle',fill:s.c,'font-size':42,'font-weight':800,class:'num'},g).textContent=s.a;
+  el('text',{y:36,'text-anchor':'middle',fill:s.c,'font-size':30,'font-weight':900},g).textContent=s.b;
+  s.g=g;});
+// pins
+const PINS=[
+ {wx:810,wy:700,y0:1968,y1:9999,tag:'校門・高獅路',tip:'<b>1968</b> 省立楊梅高中於此成立，地址：楊梅高山里高獅路。'},
+ {wx:705,wy:500,y0:1968,y1:2012,tag:'啟明初中舊校舍',tip:'校地前身為<b>縣立啟明初中</b>（1960–1968）。1968 年由省立楊梅高中接收。（位置示意）'},
+ {wx:927,wy:520,y0:1970,y1:9999,tag:'操場',tip:'操場與跑道（位置示意）。'},
+ {wx:705,wy:470,y0:2014.2,y1:9999,tag:'新大樓 2014',tip:'<b>2014 年 5 月</b>新大樓剪綵啟用，高一新生使用新教室與設備。（外形示意）'},
+ {wx:60,wy:740,y0:1968,y1:9999,tag:'← 楊梅市區',tip:'往楊梅市區方向（方位示意）。'},
+];
+const pinsDiv=$('#pins'), tip=$('#tip');
+PINS.forEach(p=>{const b=document.createElement('button');b.className='pin';b.innerHTML=`<span class="tag">${p.tag}</span><span class="stem"></span><span class="dot"></span>`;
+  b.addEventListener('click',e=>{e.stopPropagation();tip.innerHTML=p.tip;tip.style.display='block';const r=b.offsetLeft,tt=b.offsetTop;tip.style.left=Math.min(640,Math.max(10,r-200))+'px';tip.style.top=Math.max(10,tt-b.offsetHeight-140)+'px';});
+  pinsDiv.appendChild(b);p.b=b;});
+document.addEventListener('click',()=>{tip.style.display='none';});
+
+/* ================= timeline ribbon ================= */
+const tl=$('#tl');const PX=64;
+el('rect',{x:0,y:0,width:1920,height:180,fill:'#23324A'},tl);
+const tlStrip=el('g',{},tl);
+const ERA=['#4FB3E8','#5DBB63','#F27BA0','#FFD45C','#9b8cf0','#ff9e6b'];
+PRINC.forEach((p,i)=>{const x0=(p[1]-1960)*PX,x1=(p[2]-1960)*PX;
+  el('rect',{x:x0+2,y:96,width:x1-x0-4,height:40,rx:20,fill:ERA[i%ERA.length],opacity:.92},tlStrip);
+  el('text',{x:(x0+x1)/2,y:124,'text-anchor':'middle','font-size':22,'font-weight':900,fill:'#23324A'},tlStrip).textContent=p[0]+(i===0?'（首任）':'');});
+for(let y=1960;y<=2032;y++){const x=(y-1960)*PX;const big=y%5===0;
+  el('line',{x1:x,y1:big?40:54,x2:x,y2:72,stroke:'rgba(255,255,255,'+(big?.9:.45)+')','stroke-width':big?3:2},tlStrip);
+  if(big)el('text',{x,y:30,'text-anchor':'middle','font-size':26,'font-weight':800,fill:'#fff',class:'num'},tlStrip).textContent=y;}
+el('line',{x1:0,y1:72,x2:(2032-1960)*PX,y2:72,stroke:'rgba(255,255,255,.6)','stroke-width':2},tlStrip);
+[[1968.6,'成立'],[1999,'綜高'],[2000.1,'國立'],[2014.4,'新大樓'],[2018,'市立'],[2019,'普高']].forEach(m=>{const x=(m[0]-1960)*PX;
+  el('circle',{cx:x,cy:72,r:9,fill:'#FFD45C',stroke:'#23324A','stroke-width':3},tlStrip);
+  el('text',{x:x+12,y:62,'font-size':18,'font-weight':900,fill:'#FFD45C'},tlStrip).textContent=m[1];});
+const nowMark=el('g',{},tl);
+el('rect',{x:-1,y:0,width:2,height:180,fill:'#F27BA0'},nowMark);
+const plane=el('path',{d:'M-30 0 L28 -14 L-6 4 L-10 18 L-4 6 Z',fill:'#fff',stroke:'#F27BA0','stroke-width':3,'stroke-linejoin':'round'},nowMark);
+const tlYear=el('text',{x:0,y:166,'text-anchor':'middle','font-size':24,'font-weight':800,fill:'#F27BA0',class:'num'},nowMark);
+el('rect',{x:0,y:0,width:220,height:180,fill:'url(#fadeL)'},tl);
+const tdefs=el('defs',{},tl);
+const lg=el('linearGradient',{id:'fadeL'},tdefs);el('stop',{offset:0,'stop-color':'#23324A'},lg);el('stop',{offset:1,'stop-color':'#23324A','stop-opacity':0},lg);
+const rg=el('linearGradient',{id:'fadeR'},tdefs);el('stop',{offset:0,'stop-color':'#23324A','stop-opacity':0},rg);el('stop',{offset:1,'stop-color':'#23324A'},rg);
+el('rect',{x:1700,y:0,width:220,height:180,fill:'url(#fadeR)'},tl);
+
+/* ================= background deco & petals ================= */
+const bgDeco=$('#bgDeco');
+[[1880,60,40],[40,1060,60],[1150,105,22]].forEach(c=>el('use',{href:'#plum',x:c[0]-c[2],y:c[1]-c[2],width:c[2]*2,height:c[2]*2,opacity:.5},bgDeco));
+const petals=$('#petals');const PET=[];const rp=rng(9);
+for(let i=0;i<16;i++){const u=el('use',{href:'#plum',width:30,height:30,opacity:.75},petals);PET.push({u,x0:rp()*2200,y0:rp()*1080,vx:28+rp()*40,vy:16+rp()*22,ph:rp()*6,s:.5+rp()*.8});}
+
+/* ================= chips & chapters ================= */
+const chips=$('#chips');CH.forEach((c,i)=>{const b=document.createElement('button');b.className='chip';b.title=c.yrs+' '+c.title;b.onclick=()=>seek(c.t0+.01);chips.appendChild(b);c.chip=b;});
+const card=$('#card');
+function cardHTML(i){const c=CH[i];
+  return `<div class="tape"></div><div><span class="chno">CH.${c.no}</span><span class="yrs">${c.yrs}</span></div>
+  <div class="ctitle"><span>${c.title}</span></div>
+  ${c.bul.map(b=>`<p class="bul" data-at="${b[0]}">${b[1]}</p>`).join('')}
+  ${c.note?`<p class="note">${c.note}</p>`:''}
+  <div class="prs">${c.prs.map(p=>`<div class="pr" data-at="${p[0]}"><small>${p[1]}</small><b>${p[2]}</b><i>${p[3]}</i></div>`).join('')}</div>
+  <div class="src">${c.src.map(k=>`<a href="${SRC[k][1]}" target="_blank" rel="noopener">🛰 ${SRC[k][0]}</a>`).join('')}</div>`;}
+
+/* ================= opening & ending (HTML+SVG) ================= */
+const open=$('#open');
+open.innerHTML=`<svg width="1920" height="1080" viewBox="0 0 1920 1080" style="position:absolute;inset:0">
+ <defs><linearGradient id="skyG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7fd0ff"/><stop offset="1" stop-color="#e9f8ff"/></linearGradient></defs>
+ <rect width="1920" height="1080" fill="url(#skyG)"/>
+ <g id="oSun"><circle cx="1600" cy="230" r="120" fill="#FFD45C"/><circle cx="1600" cy="230" r="160" fill="#FFD45C" opacity=".25"/></g>
+ <g id="oHill"><path d="M0 860 Q 400 700 900 820 T 1920 780 V1080 H0Z" fill="#8fd07a"/><path d="M0 930 Q 600 820 1200 920 T 1920 900 V1080 H0Z" fill="#5DBB63"/></g>
+ <g id="oRing" transform="translate(960 560)"></g>
+</svg>
+<div id="oTitle" style="position:absolute;left:0;right:0;top:150px;text-align:center;font-weight:900;font-size:96px;letter-spacing:8px;color:#23324A"></div>
+<div id="oKick" style="position:absolute;left:0;right:0;top:290px;text-align:center;font-weight:700;font-size:40px;color:#23324A"></div>
+<div id="oYear" class="num" style="position:absolute;left:0;right:0;top:380px;text-align:center;font-weight:800;font-size:300px;line-height:1;color:#fff;-webkit-text-stroke:10px #23324A;paint-order:stroke fill;text-shadow:12px 12px 0 #F27BA0"></div>
+<div id="oSay" style="position:absolute;left:0;right:0;top:720px;text-align:center;font-weight:900;font-size:56px;color:#23324A"></div>`;
+const oTitle=$('#oTitle'),oKick=$('#oKick'),oYear=$('#oYear'),oSay=$('#oSay'),oRing=$('#oRing'),oSun=$('#oSun');
+const TITLE='楊梅高中．時光航拍校史';
+oTitle.innerHTML=[...TITLE].map(ch=>`<span style="display:inline-block">${ch}</span>`).join('');
+const oChars=[...oTitle.children];
+for(let i=0;i<60;i++){const a=i/60*Math.PI*2;el('rect',{x:-4,y:-470,width:8,height:i%5===0?40:20,rx:4,fill:'#fff',opacity:.8,transform:`rotate(${i*6})`},oRing);}
+const end=$('#end');
+end.innerHTML=`<div id="eBox" style="position:absolute;left:260px;top:220px;width:1400px;height:560px;border-radius:40px;background:rgba(255,253,247,.94);box-shadow:0 20px 60px rgba(35,50,74,.3);text-align:center;padding-top:60px">
+ <div class="num" style="font-weight:800;font-size:150px;line-height:1;color:#23324A">1968 <span style="color:#F27BA0">→</span> ${NOW_YEAR}</div>
+ <div style="font-size:46px;font-weight:900;margin-top:24px;color:#23324A"><span style="background:linear-gradient(transparent 60%,rgba(255,212,92,.85) 60%)">${NOW_YEAR-1968} 年・11 位校長・1 片青春校園</span></div>
+ <div id="eLine" style="font-size:60px;font-weight:900;margin-top:46px;color:#F27BA0;letter-spacing:4px">楊梅高中的故事，未完待續</div>
+ <div style="font-size:24px;margin-top:30px;color:#5a6b85;font-weight:700">畫面為依校史重繪之示意圖・真實衛星影像請見「資料來源・真實圖資」</div>
+</div>`;
+const eBox=$('#eBox');
+
+/* ================= RENDER(t) — pure function of t ================= */
+const subSpan=$('#sub span');
+let ccOn=true;
+function render(t){
+  t=clamp(t,0,DUR);
+  const year=yearAt(t);
+  // --- opening
+  const oOp=1-prog(t,13.6,16);
+  open.style.opacity=oOp; open.style.display=oOp<=0?'none':'block';
+  if(oOp>0){
+    const z=1+eio(prog(t,13.6,16))*.35; open.style.transform=`scale(${z})`;open.style.transformOrigin='50% 52%';
+    oChars.forEach((c,i)=>{const u=prog(t,.5+i*.07,.95+i*.07);c.style.transform=`translateY(${(1-back(u))*-80}px) rotate(${(1-u)*-20}deg)`;c.style.opacity=u;});
+    oKick.textContent=t<11.2?'⏪ 時光倒帶中…':'';oKick.style.opacity=prog(t,1.2,1.8);
+    const ry=t<3.2?NOW_YEAR:Math.round(lerp(NOW_YEAR,1968,eio(prog(t,3.2,11))));
+    oYear.textContent=ry; const jit=(t>3.2&&t<11)?Math.sin(t*40)*4:0;
+    oYear.style.transform=`translateX(${jit}px) scale(${1+.08*Math.sin(prog(t,11,11.6)*Math.PI)})`;
+    oYear.style.opacity=prog(t,.8,1.6);
+    oSay.textContent=t>=11.2?'出發！回到 1968 年':'';oSay.style.transform=`scale(${back(prog(t,11.2,11.8))})`;
+    oRing.setAttribute('transform',`translate(960 560) rotate(${-eio(prog(t,3.2,11))*360*3})`);
+    oSun.setAttribute('transform',`translate(0 ${Math.sin(t*1.2)*8})`);
+  }
+  // --- main layout fade-in
+  const mOp=prog(t,13.8,16.5);
+  ['#hdr','#mapFrame','#cardWrap','#tl'].forEach(s=>{$(s).style.opacity=mOp;});
+  // --- map camera
+  const [cx,cy,z0]=camAt(t);
+  const breathe=1+.015*Math.sin(t*.35);
+  const z=z0*breathe;
+  cam.setAttribute('transform',`translate(540 350) scale(${z}) translate(${-cx} ${-cy})`);
+  // era filter: old aerial = B/W
+  const gray=1-prog(year,1977,1998), sep=.35*gray;
+  $('#mapWrap').style.filter=`grayscale(${gray}) sepia(${sep}) contrast(${1+.12*gray}) brightness(${1+.05*gray})`;
+  $('#grainR').setAttribute('opacity',(.08+.32*gray).toFixed(3));
+  // ground/urban tint
+  const urb=prog(year,1970,2026);
+  ground.setAttribute('fill',`rgb(${Math.round(lerp(185,205,urb))},${Math.round(lerp(217,206,urb))},${Math.round(lerp(154,180,urb))})`);
+  for(const c of cells){const u=prog(year,c.uy,c.uy+1.4);c.hs.setAttribute('opacity',u.toFixed(3));c.p.setAttribute('opacity',(1-u*.9).toFixed(3));}
+  for(const R of ROADS){const u=prog(year,R.y,R.y+1.6);const w=lerp(R.w0,R.w1,prog(year,1975,2010));
+    R.core.setAttribute('stroke-width',w);R.edge.setAttribute('stroke-width',w+6);
+    const off=R.len*(1-eio(u));[R.core,R.edge].forEach(p=>{p.setAttribute('stroke-dasharray',R.len);p.setAttribute('stroke-dashoffset',off);});
+    R.mid.setAttribute('opacity',u>=1&&year>1985?.8:0);}
+  // campus
+  const cu=prog(year,1967.9,1968.9);
+  campusBase.setAttribute('opacity',.35+.65*cu);campusWall.setAttribute('stroke-dashoffset',1400*(1-eio(cu)));
+  gate.setAttribute('opacity',cu);driveway.setAttribute('opacity',.4+.6*cu);
+  const fu=prog(year,1969,1970.5), tu=prog(year,1997.5,1999);
+  field.setAttribute('opacity',fu);
+  fieldOuter.setAttribute('fill',tu>0?mix('#d8c49a','#d4543f',tu):'#d8c49a');
+  fieldInner.setAttribute('fill',tu>0?mix('#d8c49a','#58b05c',tu):'#d8c49a');
+  fieldLines.setAttribute('opacity',tu);
+  for(const b of BLD){
+    const s=prog(year,b.y0-.6,b.y0), a=prog(year,b.y0,b.y0+.9), v=b.y1?1-prog(year,b.y1-.7,b.y1):1;
+    b.scaf.setAttribute('opacity',(s*(1-a)*v).toFixed(3));
+    const sc=back(a);const cxb=b.x+b.w/2,cyb=b.y+b.h/2;
+    [b.roof,b.ridge,b.sh].forEach(e=>e.setAttribute('opacity',(a*v).toFixed(3)));
+    b.g.setAttribute('transform',`translate(${cxb} ${cyb}) scale(${(.3+.7*sc)*(.85+.15*v)}) translate(${-cxb} ${-cyb})`);
+  }
+  { const s=prog(year,NEWB.y0-1.2,NEWB.y0), a=prog(year,NEWB.y0,NEWB.y0+.8);
+    NEWB.scaf.setAttribute('opacity',s*(1-a));[NEWB.roof,NEWB.sh,NEWB.solar].forEach(e=>e.setAttribute('opacity',a));
+    const gl=a*(.35+.35*Math.sin(t*3))*(1-prog(t,214,222))+a*.12; NEWB.glow.setAttribute('opacity',gl.toFixed(3));
+    const sc=.4+.6*back(a);NEWB.g.setAttribute('transform',`translate(707 508) scale(${sc}) translate(-707 -508)`);}
+  for(const tr of trees){tr.c.setAttribute('r',(tr.rmax*eout(prog(year,tr.y0,tr.y0+12))).toFixed(2));}
+  // clouds
+  CL.forEach(c=>{const x=((c.off+t*c.spd)%1500)-260;c.g.setAttribute('transform',`translate(${x} ${c.y+Math.sin(t*.2+c.off)*10})`);});
+  // HUD year & source
+  const iy=Math.floor(year+1e-6);const fr=year-iy;
+  yrText.textContent=iy;yrText.setAttribute('transform',`translate(0 ${(1-eout(clamp(fr*6)))*-10*(year<2026?1:0)})`);
+  const src=year<1980?'舊航照・像片基本圖｜可對照：中研院百年歷史地圖':year<2000?'經建版地形圖・航照｜可對照：中研院百年歷史地圖':year<2005?'正射影像｜可對照：國土測繪中心 NLSC':year<2018?'衛星影像｜可對照：Google 地球 歷史影像':'衛星影像｜可對照：Google 地圖・NLSC 正射影像';
+  if(srcText.textContent!==src)srcText.textContent=src;
+  srcBg.setAttribute('width',Math.max(420,src.length*20+40));
+  // stamps
+  for(const s of STAMPS){const u=prog(t,s.t,s.t+.45), o=u*(1-prog(t,s.t+5.2,s.t+6));
+    s.g.setAttribute('opacity',o.toFixed(3));
+    s.g.setAttribute('transform',`translate(780 300) rotate(${lerp(-24,-8,eout(u))}) scale(${lerp(2.2,1,eout(u))})`);}
+  // pins
+  for(const p of PINS){const sx=540+(p.wx-cx)*z, sy=350+(p.wy-cy)*z;
+    const vis=year>=p.y0&&year<p.y1&&t>17&&sx>40&&sx<1040&&sy>110&&sy<590;
+    const pu=vis?Math.min(prog(year,p.y0,p.y0+.6)||1,1):0;
+    p.b.style.left=sx+'px';p.b.style.top=sy+'px';p.b.style.opacity=vis?(p.y0>1968?pu:1):0;p.b.style.pointerEvents=vis?'auto':'none';}
+  // --- card + flip
+  let ci=chapterAt(t); if(ci<0)ci=0;
+  let ang=0, show=ci;
+  for(let i=1;i<CH.length;i++){const B=CH[i].t0;
+    if(t>=B-.4&&t<B){ang=90*eio(prog(t,B-.4,B));show=i-1;}
+    else if(t>=B&&t<B+.5){ang=-90*(1-eout(prog(t,B,B+.5)));show=i;}}
+  if(card.dataset.c!=show){card.innerHTML=cardHTML(show);card.dataset.c=show;}
+  card.style.transform=`rotateY(${-ang}deg)`;
+  const base=CH[show].t0;
+  card.querySelectorAll('[data-at]').forEach(e=>{const u=prog(t,base+ +e.dataset.at,base+ +e.dataset.at+.6);
+    e.style.opacity=u;e.style.translate=`${(1-eout(u))*40}px 0`;});
+  // ending
+  const eu=prog(t,284,286.5);
+  end.style.display=eu>0?'block':'none';
+  if(eu>0){eBox.style.opacity=eu;eBox.style.transform=`translateY(${(1-eout(eu))*60}px) scale(${.92+.08*eout(eu)})`;
+    $('#eLine').style.opacity=prog(t,288,289.5);}
+  // chips
+  CH.forEach((c,i)=>{c.chip.className='chip'+(i===ci&&t>=16?' on':(t>=c.t1?' done':''));});
+  // timeline ribbon
+  tlStrip.setAttribute('transform',`translate(${960-(year-1960)*PX} 0)`);
+  nowMark.setAttribute('transform','translate(960 0)');
+  plane.setAttribute('transform',`translate(0 ${84+Math.sin(t*2.2)*5}) rotate(${Math.sin(t*2.2+1)*6})`);
+  tlYear.textContent=iy;
+  // petals
+  PET.forEach(p=>{const x=((p.x0+t*p.vx)%2200)-140,y=((p.y0+t*p.vy+Math.sin(t*.8+p.ph)*30)%1180)-60;
+    p.u.setAttribute('transform',`translate(${x} ${y}) rotate(${(t*40+p.ph*60)%360} 15 15) scale(${p.s})`);});
+  // subtitles
+  let cap='';if(ccOn)for(const v of VO){if(t>=v.t&&t<v.t+v.d){cap=v.cap;break;}}
+  if(subSpan.textContent!==cap){subSpan.textContent=cap;}
+  subSpan.style.display=cap?'inline-block':'none';
+}
+function mix(a,b,u){const pa=parseInt(a.slice(1),16),pb=parseInt(b.slice(1),16);const r=Math.round(lerp(pa>>16,pb>>16,u)),g=Math.round(lerp(pa>>8&255,pb>>8&255,u)),bl=Math.round(lerp(pa&255,pb&255,u));return`rgb(${r},${g},${bl})`;}
+window.render=render; window.__DUR=DUR;
+
+/* ================= AUDIO (Web Audio, original synthesis) ================= */
+let AC=null, master, musicBus, sfxBus, rev, sess=null, noiseBuf;
+let musicOn=true;
+function initAudio(){
+  if(AC)return; const C=window.AudioContext||window.webkitAudioContext; if(!C)return;
+  AC=new C();
+  master=AC.createGain();master.gain.value=.9;
+  const comp=AC.createDynamicsCompressor();comp.threshold.value=-14;comp.ratio.value=3;
+  master.connect(comp);comp.connect(AC.destination);
+  musicBus=AC.createGain();musicBus.gain.value=.85;musicBus.connect(master);
+  sfxBus=AC.createGain();sfxBus.gain.value=.8;sfxBus.connect(master);
+  // reverb impulse (seeded)
+  rev=AC.createConvolver();const len=AC.sampleRate*2.4;const ib=AC.createBuffer(2,len,AC.sampleRate);const rr=rng(5);
+  for(let ch=0;ch<2;ch++){const d=ib.getChannelData(ch);for(let i=0;i<len;i++)d[i]=(rr()*2-1)*Math.pow(1-i/len,3);}
+  rev.buffer=ib;const rg=AC.createGain();rg.gain.value=.28;rev.connect(rg);rg.connect(master);
+  noiseBuf=AC.createBuffer(1,AC.sampleRate,AC.sampleRate);const nd=noiseBuf.getChannelData(0);const rn=rng(11);for(let i=0;i<nd.length;i++)nd[i]=rn()*2-1;
+}
+const mtof=m=>440*Math.pow(2,(m-69)/12);
+function env(g,t0,a,peak,dec,sus=0){g.gain.setValueAtTime(0,t0);g.gain.linearRampToValueAtTime(peak,t0+a);g.gain.exponentialRampToValueAtTime(Math.max(sus,1e-4),t0+a+dec);}
+function out(node,bus,wet=0){node.connect(bus);if(wet>0){const w=AC.createGain();w.gain.value=wet;node.connect(w);w.connect(rev);}}
+function pluck(bus,t0,m,v){const o=AC.createOscillator(),o2=AC.createOscillator(),g=AC.createGain();o.type='triangle';o2.type='sine';o.frequency.value=mtof(m);o2.frequency.value=mtof(m)*4;
+  const g2=AC.createGain();env(g2,t0,.002,v*.12,.08);o2.connect(g2);g2.connect(g);o.connect(g);
+  const gg=AC.createGain();env(gg,t0,.004,v,.55);g.connect(gg);out(gg,bus,.35);o.start(t0);o2.start(t0);o.stop(t0+.8);o2.stop(t0+.3);}
+function pad(bus,t0,notes,dur,v){const f=AC.createBiquadFilter();f.type='lowpass';f.frequency.value=900;f.Q.value=.5;const g=AC.createGain();
+  g.gain.setValueAtTime(0,t0);g.gain.linearRampToValueAtTime(v,t0+.7);g.gain.setValueAtTime(v,t0+dur-.3);g.gain.linearRampToValueAtTime(0,t0+dur+.6);
+  f.connect(g);out(g,bus,.5);
+  notes.forEach(m=>[-7,7].forEach(dt=>{const o=AC.createOscillator();o.type='sawtooth';o.frequency.value=mtof(m);o.detune.value=dt;const og=AC.createGain();og.gain.value=.22/notes.length;o.connect(og);og.connect(f);o.start(t0);o.stop(t0+dur+.7);}));}
+function bass(bus,t0,m,v){const o=AC.createOscillator(),g=AC.createGain(),f=AC.createBiquadFilter();o.type='triangle';o.frequency.value=mtof(m);f.type='lowpass';f.frequency.value=400;env(g,t0,.01,v,.5,.0001);o.connect(f);f.connect(g);out(g,bus);o.start(t0);o.stop(t0+.6);}
+function kick(bus,t0,v){const o=AC.createOscillator(),g=AC.createGain();o.frequency.setValueAtTime(110,t0);o.frequency.exponentialRampToValueAtTime(42,t0+.16);env(g,t0,.003,v,.28);o.connect(g);out(g,bus);o.start(t0);o.stop(t0+.35);}
+function noise(bus,t0,dur,type,freq,q,v,wet=0){const s=AC.createBufferSource();s.buffer=noiseBuf;const f=AC.createBiquadFilter();f.type=type;f.frequency.value=freq;f.Q.value=q;const g=AC.createGain();env(g,t0,.002,v,dur);s.connect(f);f.connect(g);out(g,bus,wet);s.start(t0,Math.random()*.5);s.stop(t0+dur+.05);return f;}
+function bell(bus,t0,m,v){[1,2.76,5.4].forEach((r,i)=>{const o=AC.createOscillator(),g=AC.createGain();o.type='sine';o.frequency.value=mtof(m)*r;env(g,t0,.003,v/(1+i*1.6),1.6/(1+i));o.connect(g);out(g,bus,.6);o.start(t0);o.stop(t0+1.8);});}
+// SFX
+function sfxWhoosh(t0,v=.5){const s=AC.createBufferSource();s.buffer=noiseBuf;s.loop=true;const f=AC.createBiquadFilter();f.type='bandpass';f.Q.value=1.2;f.frequency.setValueAtTime(260,t0);f.frequency.exponentialRampToValueAtTime(3200,t0+.45);f.frequency.exponentialRampToValueAtTime(500,t0+.95);
+  const g=AC.createGain();g.gain.setValueAtTime(0,t0);g.gain.linearRampToValueAtTime(v,t0+.4);g.gain.exponentialRampToValueAtTime(1e-4,t0+1);s.connect(f);f.connect(g);out(g,sfxBus,.4);s.start(t0);s.stop(t0+1.05);}
+function sfxFlip(t0,v=.5){for(let i=0;i<3;i++)noise(sfxBus,t0+i*.045,.06,'bandpass',1800+i*700,1.4,v*(1-i*.25));noise(sfxBus,t0+.16,.12,'lowpass',500,.7,v*.6);}
+function sfxTick(t0,v=.18){const o=AC.createOscillator(),g=AC.createGain();o.type='square';o.frequency.value=2400;env(g,t0,.001,v,.025);const f=AC.createBiquadFilter();f.type='highpass';f.frequency.value=1500;o.connect(f);f.connect(g);out(g,sfxBus);o.start(t0);o.stop(t0+.05);}
+function sfxChime(t0){[84,88,91,96].forEach((m,i)=>bell(sfxBus,t0+i*.07,m,.16));}
+function sfxStamp(t0){kick(sfxBus,t0,.5);noise(sfxBus,t0,.09,'lowpass',1200,.7,.35);}
+// music score: 96 BPM, keys rise with the decades (F → G → A)
+const BPM=96, BEAT=60/BPM, STEP=BEAT/4, BAR=BEAT*4;
+const PROG=[[0,4,7,11,14],[7,11,14,17,21],[9,12,16,19,24],[5,9,12,16,19]];
+const ARP=[0,2,1,3,2,4,3,1];
+const keyAt=t=>t<118?53:t<222?55:57;
+function levelAt(t){if(t<16)return 1;if(t<52)return 1.5;if(t<118)return 2;if(t<190)return 3;if(t<282)return 4;return 2;}
+const MELO=[[0,4],[3,2],[6,3],[10,1]];
+function scheduleStep(s,when){ // s = step index, when = AudioContext time
+  const st=s*STEP; if(st>=DUR)return;
+  const bar=Math.floor(s/16), k=s%16, ch=PROG[bar%4], root=keyAt(bar*BAR), L=levelAt(st);
+  const fade=st>=292?0:1; if(!fade){ if(k===0&&bar*BAR>=292&&bar*BAR<292+BAR) pad(musicBus,when,[root-12,root-5,root+4,root+11],6,.2); return; }
+  const endSoft=st>=282?.7:1;
+  if(k===0) pad(musicBus,when,[root-12+ch[0],root+ch[1]-12,root+ch[2]-12,root+ch[3]-12],BAR,.16*endSoft);
+  const arpEvery=L>=1.5?2:4;
+  if(k%arpEvery===0){const n=ARP[(k/arpEvery+bar*2)%ARP.length];pluck(musicBus,when,root+12+ch[n%ch.length],(.11+(k%8===0?.05:0))*endSoft);}
+  if(L>=2&&(k===0||k===10))bass(musicBus,when,root-24+ch[0],.32);
+  if(L>=2&&k===8)bass(musicBus,when,root-24+ch[0]+7,.24);
+  if(L>=3&&(k===0||k===8))kick(musicBus,when,.32);
+  if(L>=3&&k%4===2)noise(musicBus,when,.05,'highpass',7000,.7,.07);
+  if(L>=4&&k%2===1)noise(musicBus,when,.03,'highpass',8000,.7,.03);
+  if(L>=4&&(k===4||k===12))noise(musicBus,when,.08,'bandpass',2200,2,.06,.3);
+  if(L>=4&&bar%2===0){for(const[ks,ni]of MELO)if(k===ks)bell(musicBus,when,root+24+ch[ni%ch.length],.07);}
+}
+// SFX cue list derived from timeline
+const SFXQ=[];
+SFXQ.push({t:13.8,f:t0=>sfxWhoosh(t0,.6)});
+CH.forEach((c,i)=>{if(i>0)SFXQ.push({t:c.t0-.45,f:t0=>sfxWhoosh(t0,.45)});SFXQ.push({t:c.t0-.05,f:t0=>sfxFlip(t0,.55)});});
+STAMPS.forEach(s=>SFXQ.push({t:s.t,f:t0=>sfxStamp(t0)}));
+CHIMES.forEach(c=>SFXQ.push({t:c+.25,f:t0=>sfxChime(t0)}));
+SFXQ.push({t:283.6,f:t0=>sfxWhoosh(t0,.5)});
+
+/* ================= transport ================= */
+let playing=false, tNow=0, songOrigin=0, perfOrigin=0, nextStep=0, lastSfxT=0, lastTickYear=0, lastTickAt=0, voIdx=0;
+const clockNow=()=>AC?AC.currentTime:performance.now()/1000;
+function curT(){return playing?clockNow()-songOrigin:tNow;}
+function startSession(){
+  if(!AC)return; if(sess){try{sess.disconnect();}catch(e){}}
+  sess=AC.createGain();sess.gain.value=musicOn?1:0;sess.connect(master);
+  musicBus.disconnect();musicBus=AC.createGain();musicBus.gain.value=.85;musicBus.connect(sess);
+  sfxBus.disconnect();sfxBus=AC.createGain();sfxBus.gain.value=.8;sfxBus.connect(sess);
+}
+function stopSession(){if(sess){const s=sess;s.gain.setTargetAtTime(0,AC.currentTime,.03);setTimeout(()=>{try{s.disconnect();}catch(e){}},200);sess=null;}}
+function play(){
+  if(tNow>=DUR-.05)tNow=0;
+  if(AC&&AC.state==='suspended')AC.resume();
+  startSession();
+  songOrigin=clockNow()-tNow; playing=true;
+  nextStep=Math.ceil(tNow/STEP-1e-6); lastSfxT=tNow; lastTickYear=Math.floor(tickYear(tNow));
+  voIdx=VO.findIndex(v=>v.t>=tNow-.05); if(voIdx<0)voIdx=VO.length;
+  // resume a line we are in the first half of
+  const cur=VO.findIndex(v=>tNow>v.t&&tNow<v.t+v.d*.35); if(cur>=0){speak(VO[cur]);voIdx=cur+1;}
+  $('#playBtn').textContent='❚❚ 暫停'; poke();
+}
+function pause(){tNow=curT();playing=false;stopSession();if('speechSynthesis'in window)speechSynthesis.cancel();$('#playBtn').textContent='▶ 播放';poke();}
+function seek(t){const was=playing;if(playing){playing=false;stopSession();}if('speechSynthesis'in window)speechSynthesis.cancel();tNow=clamp(t,0,DUR);render(tNow);if(was)play();}
+function tickYear(t){return t<16?(t<3.2?NOW_YEAR:lerp(NOW_YEAR,1968,eio(prog(t,3.2,11)))):yearAt(t);}
+// speech
+let voOn=true, voice=null;
+function pickVoice(){if(!('speechSynthesis'in window))return;const vs=speechSynthesis.getVoices();
+  voice=vs.find(v=>/zh[-_]TW/i.test(v.lang)&&v.default)||vs.find(v=>/zh[-_]TW/i.test(v.lang))||vs.find(v=>/^zh/i.test(v.lang)&&v.default)||vs.find(v=>/^zh/i.test(v.lang))||null;}
+if('speechSynthesis'in window){pickVoice();speechSynthesis.onvoiceschanged=pickVoice;}
+function speak(v){if(!voOn||!('speechSynthesis'in window))return;const u=new SpeechSynthesisUtterance(v.say);u.lang='zh-TW';if(voice)u.voice=voice;u.rate=1.15;u.pitch=1.05;u.volume=1;speechSynthesis.speak(u);}
+function loop(){
+  if(playing){
+    const t=curT();
+    if(t>=DUR){tNow=DUR;render(DUR);pause();}
+    else{
+      tNow=t;render(t);
+      if(AC&&sess){
+        const ahead=clockNow()+.25;
+        while(songOrigin+nextStep*STEP<ahead){const when=songOrigin+nextStep*STEP;if(when>=clockNow()-.01)scheduleStep(nextStep,Math.max(when,clockNow()));nextStep++;}
+        for(const q of SFXQ){if(q.t>lastSfxT&&q.t<=t+.25){q.f(Math.max(clockNow(),songOrigin+q.t));}}
+        lastSfxT=t+.25;
+        const ty=Math.floor(tickYear(t)+1e-6);
+        if(ty!==lastTickYear){if(clockNow()-lastTickAt>.07){sfxTick(clockNow(),t<16?.12:.2);lastTickAt=clockNow();}lastTickYear=ty;}
+        // ducking under narration
+        const speaking=('speechSynthesis'in window)&&speechSynthesis.speaking;
+        musicBus.gain.setTargetAtTime(speaking&&voOn?.42:.85,clockNow(),.25);
+      }
+      while(voIdx<VO.length&&VO[voIdx].t<=t){if(t-VO[voIdx].t<1)speak(VO[voIdx]);voIdx++;}
+    }
+    updUI();
+  }
+  requestAnimationFrame(loop);
+}
+
+/* ================= UI ================= */
+const stage=$('#stage'), bar=$('#bar'), ui=$('#ui');
+function fit(){const s=Math.min(innerWidth/1920,innerHeight/1080);stage.style.transform=`scale(${s})`;stage.style.left=(innerWidth-1920*s)/2+'px';stage.style.top=(innerHeight-1080*s)/2+'px';}
+addEventListener('resize',fit);fit();
+CH.forEach(c=>{const m=document.createElement('div');m.className='mk';m.style.left=(c.t0/DUR*100)+'%';bar.appendChild(m);});
+const sel=$('#chapSel');[['0','▶ 片頭'],...CH.map(c=>[c.t0,`CH.${c.no} ${c.yrs} ${c.title}`]),['282','◎ 片尾']].forEach(o=>{const op=document.createElement('option');op.value=o[0];op.textContent=o[1];sel.appendChild(op);});
+sel.onchange=()=>seek(+sel.value+.01);
+const fmt=s=>String(Math.floor(s/60)).padStart(2,'0')+':'+String(Math.floor(s%60)).padStart(2,'0');
+function updUI(){const t=curT();const p=t/DUR*100;bar.querySelector('.fill').style.width=p+'%';bar.querySelector('.knob').style.left=p+'%';$('#time').textContent=fmt(t)+' / '+fmt(DUR);
+  const ci=t<16?'0':t>=282?'282':String(CH[chapterAt(t)].t0);if(sel.value!==ci&&document.activeElement!==sel)sel.value=ci;}
+let drag=false;const barSeek=e=>{const r=bar.getBoundingClientRect();seek((e.clientX-r.left)/r.width*DUR);updUI();};
+bar.addEventListener('pointerdown',e=>{drag=true;bar.setPointerCapture(e.pointerId);barSeek(e);});
+bar.addEventListener('pointermove',e=>{if(drag){const r=bar.getBoundingClientRect();tNow=clamp((e.clientX-r.left)/r.width*DUR,0,DUR);if(!playing)render(tNow);updUI();}});
+bar.addEventListener('pointerup',e=>{if(drag){drag=false;barSeek(e);}});
+$('#playBtn').onclick=()=>{initAudio();playing?pause():play();};
+$('#ccBtn').onclick=e=>{ccOn=!ccOn;e.target.classList.toggle('off',!ccOn);render(curT());};
+$('#voBtn').onclick=e=>{voOn=!voOn;e.target.classList.toggle('off',!voOn);if(!voOn&&'speechSynthesis'in window)speechSynthesis.cancel();};
+$('#muBtn').onclick=e=>{musicOn=!musicOn;e.target.classList.toggle('off',!musicOn);if(sess)sess.gain.setTargetAtTime(musicOn?1:0,AC.currentTime,.05);};
+$('#fsBtn').onclick=()=>{document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen();};
+const drawer=$('#drawer');$('#srcBtn').onclick=()=>{drawer.classList.add('open');if(playing)pause();};$('#drawerX').onclick=()=>drawer.classList.remove('open');
+$('#startBtn').onclick=()=>{$('#start').style.display='none';initAudio();if(AC)AC.resume();
+  if('speechSynthesis'in window){const w=new SpeechSynthesisUtterance(' ');w.volume=0;speechSynthesis.speak(w);} play();};
+let idle;function poke(){ui.classList.remove('hide');clearTimeout(idle);if(playing)idle=setTimeout(()=>ui.classList.add('hide'),2600);}
+addEventListener('pointermove',poke);
+addEventListener('keydown',e=>{if(e.target.tagName==='SELECT')return;
+  if(e.code==='Space'){e.preventDefault();initAudio();$('#start').style.display='none';playing?pause():play();}
+  else if(e.code==='ArrowRight')seek(curT()+5);else if(e.code==='ArrowLeft')seek(curT()-5);
+  else if(e.key==='f')$('#fsBtn').click();poke();});
+// initial frame (supports ?t=SECONDS for review / deep links)
+const q=new URLSearchParams(location.search);tNow=clamp(parseFloat(q.get('t'))||0,0,DUR);
+if(q.has('still')){$('#start').style.display='none';ui.style.display='none';}
+render(tNow);updUI();
+window.READY=false;(document.fonts?document.fonts.ready:Promise.resolve()).then(()=>{render(tNow);window.READY=true;});
+requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>
